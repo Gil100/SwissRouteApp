@@ -5,13 +5,23 @@
     <link rel="icon" href="/SwissRouteApp/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="manifest" href="/SwissRouteApp/manifest.json" />
-    <title>SwissRoute – טיול שווייץ 2025</title>
+    <link rel="manifest" href="manifest.json" />
+    <title>SwissRoute – טיול לשווייץ 2025</title>
     <script type="module" crossorigin src="/SwissRouteApp/assets/index-84898272.js"></script>
     <link rel="stylesheet" href="/SwissRouteApp/assets/index-69420918.css">
   </head>
   <body>
     <div id="root"></div>
+
     
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(() => console.log("✅ Service Worker Registered"))
+          .catch((err) => console.log("❌ SW registration failed:", err));
+      }
+    </script>
   </body>
 </html>
