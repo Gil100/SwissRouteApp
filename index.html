@@ -10,16 +10,16 @@
   </head>
   <body>
     <div id="root"></div>
-
     <script type="module" src="/SwissRouteApp/src/main.jsx"></script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/SwissRouteApp/service-worker.js", { scope: "/SwissRouteApp/" })
-        .then(() => console.log("✅ Service Worker Registered"))
-        .catch((err) => console.log("❌ SW registration failed:", err));
-    }
-  </script>
+    
+    <!-- Service Worker מושבת זמנית עד שנפתור את בעיות המפה -->
+    <!-- <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/SwissRouteApp/service-worker.js", { scope: "/SwissRouteApp/" })
+          .then(() => console.log("✅ Service Worker Registered"))
+          .catch((err) => console.log("❌ SW registration failed:", err));
+      }
+    </script> -->
   </body>
 </html>
