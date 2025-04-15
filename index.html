@@ -16,7 +16,7 @@
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register("/SwissRouteApp/service-worker.js")
+        .register("/SwissRouteApp/service-worker.js", { scope: "/SwissRouteApp/" })
         .then(() => console.log("✅ Service Worker Registered"))
         .catch((err) => console.log("❌ SW registration failed:", err));
     }
