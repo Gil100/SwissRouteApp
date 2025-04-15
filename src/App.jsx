@@ -3,18 +3,15 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// יצירת אייקון מותאם אישית עם SVG מובנה (לא צריך קבצים חיצוניים)
-const customIcon = L.divIcon({
+// יצירת אייקון מותאם אישית עם נקודה פשוטה - לא צריך קבצים חיצוניים
+const simpleIcon = L.divIcon({
   html: `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 41" width="24" height="41">
-      <path d="M12 0c-6.627 0-12 5.373-12 12 0 7.866 12 29 12 29s12-21.134 12-29c0-6.627-5.373-12-12-12zm0 18c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z" 
-            fill="#2196F3" stroke="#FFF" stroke-width="1.5"/>
-    </svg>
+    <div style="background-color: #2196F3; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;"></div>
   `,
   className: "",
-  iconSize: [24, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [0, -41]
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+  popupAnchor: [0, -10]
 });
 
 const itinerary = {
@@ -101,7 +98,7 @@ export default function App() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {itinerary[day].map((item, idx) => (
-          <Marker key={idx} position={item.location} icon={customIcon}>
+          <Marker key={idx} position={item.location} icon={simpleIcon}>
             <Popup>
               <strong>{item.title}</strong><br />
               {item.desc}
