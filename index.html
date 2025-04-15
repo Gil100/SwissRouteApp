@@ -13,13 +13,16 @@
     <script type="module" src="/SwissRouteApp/src/main.jsx"></script>
     
     <!-- Service Worker מושבת זמנית עד שנפתור את בעיות המפה -->
-    <!-- <script>
+    <!-- כשרוצים להחזיר אותו, יש להסיר את ההערות ולהוסיף את פרמטר ה-scope -->
+    <!-- 
+    <script>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
           .register("/SwissRouteApp/service-worker.js", { scope: "/SwissRouteApp/" })
           .then(() => console.log("✅ Service Worker Registered"))
           .catch((err) => console.log("❌ SW registration failed:", err));
       }
-    </script> -->
+    </script>
+    -->
   </body>
 </html>
