@@ -5,10 +5,11 @@ import 'leaflet/dist/leaflet.css';
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "icons/marker-icon-2x.png",
-  iconUrl: "icons/marker-icon.png",
-  shadowUrl: "icons/marker-shadow.png"
+  iconRetinaUrl: "./icons/marker-icon-2x.png",
+  iconUrl: "./icons/marker-icon.png",
+  shadowUrl: "./icons/marker-shadow.png"
 });
+
 
 
 
