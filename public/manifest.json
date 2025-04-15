@@ -1,5 +1,5 @@
 {
-  "name": "SwissRoute – טיול שוויץ 2025",
+  "name": "SwissRoute – טיול שווייץ 2025",
   "short_name": "SwissRoute",
   "start_url": ".",
   "display": "standalone",
@@ -8,15 +8,15 @@
   "lang": "he",
   "orientation": "portrait",
   "icons": [
-  {
-    "src": "/SwissRouteApp/icons/icon192.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  },
-  {
-    "src": "/SwissRouteApp/icons/icon512.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }
-]
+    {
+      "src": "icons/icon192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
