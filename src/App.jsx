@@ -5,10 +5,11 @@ import 'leaflet/dist/leaflet.css';
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "icons/marker-icon-2x.png",
-  iconUrl: "icons/marker-icon.png",
-  shadowUrl: "icons/marker-shadow.png"
+  iconRetinaUrl: "/SwissRouteApp/icons/marker-icon-2x.png",
+  iconUrl: "/SwissRouteApp/icons/marker-icon.png",
+  shadowUrl: "/SwissRouteApp/icons/marker-shadow.png"
 });
+
 
 
 const itinerary = {
