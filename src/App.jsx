@@ -3,24 +3,18 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// הגדרת אייקונים מותאמים ללא הסתמכות על _getIconUrl
-delete L.Icon.Default.prototype._getIconUrl;
-
-// סימון מיוחד להחלפת נתיבי האייקונים
-// הנתיבים המוחלטים בלי תיקיית icons - ישירות מהשורש
-const iconRetinaUrl = "/SwissRouteApp/marker-icon-2x.png";
-const iconUrl = "/SwissRouteApp/marker-icon.png";
-const shadowUrl = "/SwissRouteApp/marker-shadow.png";
-
-// הגדרת אייקון מותאם אישית במקום להשתמש באייקון ברירת המחדל
-const defaultIcon = new L.Icon({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
-  iconSize: [25, 41],
+// יצירת אייקון מותאם אישית עם SVG מובנה (לא צריך קבצים חיצוניים)
+const customIcon = L.divIcon({
+  html: `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 41" width="24" height="41">
+      <path d="M12 0c-6.627 0-12 5.373-12 12 0 7.866 12 29 12 29s12-21.134 12-29c0-6.627-5.373-12-12-12zm0 18c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z" 
+            fill="#2196F3" stroke="#FFF" stroke-width="1.5"/>
+    </svg>
+  `,
+  className: "",
+  iconSize: [24, 41],
   iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  popupAnchor: [0, -41]
 });
 
 const itinerary = {
@@ -107,7 +101,7 @@ export default function App() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {itinerary[day].map((item, idx) => (
-          <Marker key={idx} position={item.location} icon={defaultIcon}>
+          <Marker key={idx} position={item.location} icon={customIcon}>
             <Popup>
               <strong>{item.title}</strong><br />
               {item.desc}
