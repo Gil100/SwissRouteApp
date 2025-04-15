@@ -1,4 +1,4 @@
-iimport L from 'leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // הגדרת אייקונים מותאמים שייטענו מתוך public/icons
