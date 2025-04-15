@@ -13,13 +13,13 @@
 
     <script type="module" src="/src/main.jsx"></script>
 
-    <script>
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker
-          .register("./service-worker.js")
-          .then(() => console.log("✅ Service Worker Registered"))
-          .catch((err) => console.log("❌ SW registration failed:", err));
-      }
-    </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("service-worker.js") <!-- בלי סלאש -->
+        .then(() => console.log("✅ Service Worker Registered"))
+        .catch((err) => console.log("❌ SW registration failed:", err));
+    }
+  </script>
   </body>
 </html>
