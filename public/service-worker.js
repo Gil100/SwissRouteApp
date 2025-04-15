@@ -3,11 +3,11 @@ const urlsToCache = [
   "/",
   "/index.html",
   "/manifest.json",
-  "/icon192.png",
-  "/icon512.png"
+  "/icons/icon192.png",
+  "/icons/icon512.png"
 ];
 
-// התקנה – קובץ ראשון שנשלף למטמון
+// התקנה – קובץ ראשון שנשלח לדפדפן
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
