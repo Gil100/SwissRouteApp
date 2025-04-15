@@ -3,13 +3,24 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// הגדרת אייקונים מותאמים שייטענו מתוך public/icons
+// הגדרת אייקונים מותאמים ללא הסתמכות על _getIconUrl
 delete L.Icon.Default.prototype._getIconUrl;
 
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "/SwissRouteApp/icons/marker-icon-2x.png",
-  iconUrl: "/SwissRouteApp/icons/marker-icon.png",
-  shadowUrl: "/SwissRouteApp/icons/marker-shadow.png"
+// סימון מיוחד להחלפת נתיבי האייקונים
+// הנתיבים המוחלטים בלי תיקיית icons - ישירות מהשורש
+const iconRetinaUrl = "/SwissRouteApp/marker-icon-2x.png";
+const iconUrl = "/SwissRouteApp/marker-icon.png";
+const shadowUrl = "/SwissRouteApp/marker-shadow.png";
+
+// הגדרת אייקון מותאם אישית במקום להשתמש באייקון ברירת המחדל
+const defaultIcon = new L.Icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
 const itinerary = {
@@ -96,7 +107,7 @@ export default function App() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {itinerary[day].map((item, idx) => (
-          <Marker key={idx} position={item.location}>
+          <Marker key={idx} position={item.location} icon={defaultIcon}>
             <Popup>
               <strong>{item.title}</strong><br />
               {item.desc}
