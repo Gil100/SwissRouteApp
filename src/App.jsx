@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import L from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // הגדרת אייקונים מותאמים שייטענו מתוך public/icons
