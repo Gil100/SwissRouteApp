@@ -1,28 +1,6 @@
-import { useState } from 'react';
-import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-
-// יוצר אייקון מותאם אישית פשוט (נקודה כחולה) ללא תלות בקבצים חיצוניים
-const createSimpleIcon = () => {
-  return L.divIcon({
-    className: 'custom-div-icon',
-    html: `<div style="background-color: #1976D2; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 3px rgba(0,0,0,0.5);"></div>`,
-    iconSize: [16, 16],
-    iconAnchor: [8, 8],
-    popupAnchor: [0, -8]
-  });
-};
-
-// מוחק את התנהגות ברירת המחדל שמחפשת את קבצי האייקונים
-delete L.Icon.Default.prototype._getIconUrl;
-
-// מגדיר התנהגות מחדל שלא תחפש קבצים חיצוניים
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-  iconUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-  shadowUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
-});
 
 // נתוני המסלול
 const itinerary = {
@@ -69,10 +47,83 @@ const itinerary = {
   ]
 };
 
+// רכיב שמוסיף סמנים מותאמים אישית למפה
+function CustomMarkers({ locations }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    // הסרת כל הסמנים הקיימים מהמפה
+    map.eachLayer(layer => {
+      if (layer._latlng) { // בדיקה אם זה סמן
+        map.removeLayer(layer);
+      }
+    });
+    
+    // הוספת שכבת ה-TileLayer מחדש (אחרי שהסרנו את כל השכבות)
+    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    
+    // יצירת סמנים חדשים עם HTML מותאם אישית
+    if (locations && locations.length > 0) {
+      locations.forEach(location => {
+        // יצירת אלמנט HTML עבור הסמן
+        const markerHtml = document.createElement('div');
+        markerHtml.className = 'custom-marker';
+        markerHtml.style.backgroundColor = '#1976D2';
+        markerHtml.style.width = '14px';
+        markerHtml.style.height = '14px';
+        markerHtml.style.borderRadius = '50%';
+        markerHtml.style.border = '2px solid white';
+        markerHtml.style.boxShadow = '0 0 4px rgba(0,0,0,0.5)';
+        
+        // יצירת אייקון מותאם אישית
+        const customIcon = L.divIcon({
+          html: markerHtml,
+          className: 'custom-marker-icon',
+          iconSize: [18, 18],
+          iconAnchor: [9, 9]
+        });
+        
+        // יצירת הסמן והוספתו למפה
+        const marker = L.marker(location.location, { icon: customIcon })
+          .addTo(map)
+          .bindPopup(`<strong>${location.title}</strong><br>${location.desc}`);
+      });
+    }
+    
+    // איפוס תצוגת המפה למרכז שווייץ אם אין מיקומים
+    if (!locations || locations.length === 0) {
+      map.setView([46.7, 8.2], 9);
+    } 
+    // מרכוז המפה לראות את כל המיקומים אם יש כאלה
+    else if (locations.length === 1) {
+      map.setView(locations[0].location, 13);
+    } 
+    else {
+      const bounds = locations.map(loc => loc.location);
+      map.fitBounds(bounds, { padding: [50, 50] });
+    }
+    
+    // ניקוי כאשר הקומפוננטה מתפרקת
+    return () => {
+      map.eachLayer(layer => {
+        if (layer._latlng) {
+          map.removeLayer(layer);
+        }
+      });
+    };
+  }, [map, locations]);
+
+  return null;
+}
+
 // הקומפוננטה הראשית
 export default function App() {
   const [day, setDay] = useState("30/5/25");
-  const simpleIcon = createSimpleIcon();
+  
+  // לוודא שיש L מוגדר עבור הסמנים המותאמים אישית
+  const L = window.L;
 
   return (
     <div style={{ padding: "1rem", fontFamily: "sans-serif", direction: "rtl" }}>
@@ -89,7 +140,7 @@ export default function App() {
         ))}
       </select>
 
-      <ul>
+      <ul style={{ paddingInlineStart: "20px" }}>
         {itinerary[day].map((item, idx) => (
           <li key={idx} style={{ marginBottom: "1rem" }}>
             <strong>{item.time} – {item.title}</strong><br />
@@ -105,20 +156,20 @@ export default function App() {
         ))}
       </ul>
 
-      <MapContainer center={[46.7, 8.2]} zoom={9} scrollWheelZoom={false} style={{ height: "400px", marginTop: "1rem", borderRadius: "12px" }}>
-        <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {itinerary[day].map((item, idx) => (
-          <Marker key={idx} position={item.location} icon={simpleIcon}>
-            <Popup>
-              <strong>{item.title}</strong><br />
-              {item.desc}
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+      <div style={{ height: "400px", marginTop: "1rem", borderRadius: "12px", overflow: "hidden" }}>
+        <MapContainer 
+          center={[46.7, 8.2]} 
+          zoom={9} 
+          scrollWheelZoom={false} 
+          style={{ height: "100%", width: "100%" }}
+        >
+          <TileLayer
+            attribution='&copy; OpenStreetMap contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <CustomMarkers locations={itinerary[day]} />
+        </MapContainer>
+      </div>
     </div>
   );
 }
