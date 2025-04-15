@@ -10,11 +10,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "/SwissRouteApp/icons/marker-shadow.png"
 });
 
-
-
-
-
-
 const itinerary = {
   "30/5/25": [
     { time: "09:30", title: "Staubbach Falls", desc: "מפלים גבוהים בעמק לאוטרברונן", location: [46.5939, 7.9098] },
