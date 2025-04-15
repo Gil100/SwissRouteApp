@@ -3,17 +3,28 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// יצירת אייקון מותאם אישית עם נקודה פשוטה - לא צריך קבצים חיצוניים
-const simpleIcon = L.divIcon({
-  html: `
-    <div style="background-color: #2196F3; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;"></div>
-  `,
-  className: "",
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
-  popupAnchor: [0, -10]
+// יוצר אייקון מותאם אישית פשוט (נקודה כחולה) ללא תלות בקבצים חיצוניים
+const createSimpleIcon = () => {
+  return L.divIcon({
+    className: 'custom-div-icon',
+    html: `<div style="background-color: #1976D2; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 3px rgba(0,0,0,0.5);"></div>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+    popupAnchor: [0, -8]
+  });
+};
+
+// מוחק את התנהגות ברירת המחדל שמחפשת את קבצי האייקונים
+delete L.Icon.Default.prototype._getIconUrl;
+
+// מגדיר התנהגות מחדל שלא תחפש קבצים חיצוניים
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+  iconUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+  shadowUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
 });
 
+// נתוני המסלול
 const itinerary = {
   "30/5/25": [
     { time: "09:30", title: "Staubbach Falls", desc: "מפלים גבוהים בעמק לאוטרברונן", location: [46.5939, 7.9098] },
@@ -58,8 +69,10 @@ const itinerary = {
   ]
 };
 
+// הקומפוננטה הראשית
 export default function App() {
   const [day, setDay] = useState("30/5/25");
+  const simpleIcon = createSimpleIcon();
 
   return (
     <div style={{ padding: "1rem", fontFamily: "sans-serif", direction: "rtl" }}>
