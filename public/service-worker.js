@@ -1,10 +1,9 @@
 const CACHE_NAME = "swissroute-cache-v1";
 const urlsToCache = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/icons/icon192.png",
-  "/icons/icon512.png"
+  "index.html",
+  "manifest.json",
+  "icons/icon192.png",
+  "icons/icon512.png"
 ];
 
 // התקנה – קובץ ראשון שנשלח לדפדפן
